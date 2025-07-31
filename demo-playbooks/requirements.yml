@@ -1,4 +1,5 @@
 ---
 collections:
   - hitachivantara.vspone_block
+  - vmware.vmware
   - community.vmware

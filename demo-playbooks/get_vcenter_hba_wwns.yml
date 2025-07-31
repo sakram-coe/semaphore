@@ -3,6 +3,7 @@
   hosts: localhost
   gather_facts: no
   collections:
+    - vmware.vmware
     - community.vmware
 
   vars:
@@ -10,6 +11,7 @@
     vcenter_username: "{{ lookup('env', 'vcenter_user') }}"
     vcenter_password: "{{ lookup('env', 'vcenter_password') }}"
     cluster_name: "{{ lookup('env', 'vcenter_cluster') }}"
+    datacenter: "{{ lookup('env', 'vcenter_datacenter') }}"
 
   tasks:
     - name: Gather all ESXi hosts in the cluster
@@ -18,10 +20,10 @@
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
         validate_certs: no
-        datacenter: "{{ lookup('env', 'vcenter_datacenter') }}"
+        datacenter: "{{ datacenter }}"
         cluster_name: "{{ cluster_name }}"
       delegate_to: localhost
-      register: cluster_hosts
+      register: cluster_info
 
     - name: Get HBA WWNs for each host
       vmware_host_facts:
@@ -30,7 +32,7 @@
         password: "{{ vcenter_password }}"
         validate_certs: no
         esxi_hostname: "{{ item }}"
-      loop: "{{ cluster_hosts.hosts }}"
+      loop: "{{ cluster_info.hosts }}"
       register: host_facts
 
     - name: Print HBA WWNs
