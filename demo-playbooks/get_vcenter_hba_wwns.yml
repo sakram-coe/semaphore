@@ -20,6 +20,7 @@
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
         datacenter_name: "{{ datacenter }}"
+        validate_certs: no
         cluster_name: "{{ cluster_name }}"
       register: cluster_info
     
