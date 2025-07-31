@@ -1,0 +1,27 @@
+- name: Provision lun to host direct
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - hitachivantara.vspone_block.vsp
+
+ # vars_files:
+ #   - ../ansible_vault_vars/ansible_vault_storage_var.yml
+  vars:   
+    ldev_id: "{{ lookup('env', 'pool_id') }}"
+    sizeInGB: "{{ lookup('env', 'sizeInGB') }}"
+
+  tasks:
+    - name: Create lun with direct connection
+      hitachivantara.vspone_block.vsp.hv_ldev:
+        connection_info:
+          address: "{{ lookup('env', 'storage_address') }}"
+          username: "{{ lookup('env', 'storage_username') }}"
+          password: "{{ lookup('env', 'storage_secret') }}"
+        state: present
+        spec:
+          ldev_id: '{{ ldev_id }}'
+          size: '{{ sizeInGB }}'
+      register: result_expand_lun
+
+    - debug:
+        var: result_create_lun
