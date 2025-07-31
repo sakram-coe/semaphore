@@ -24,6 +24,9 @@
         cluster_name: "{{ cluster_name }}"
       delegate_to: localhost
       register: cluster_info
+    
+    - debug:
+        var: cluster_info
 
     - name: Get HBA WWNs for each host
       vmware_host_facts:
