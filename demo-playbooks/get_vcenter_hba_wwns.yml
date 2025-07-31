@@ -15,14 +15,13 @@
 
   tasks:
     - name: Gather all ESXi hosts in the cluster
-      cluster_info:
+      vmware.vmware.cluster_info:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
         validate_certs: no
         datacenter_name: "{{ datacenter }}"
         cluster_name: "{{ cluster_name }}"
-      delegate_to: localhost
       register: cluster_info
     
     - debug:
