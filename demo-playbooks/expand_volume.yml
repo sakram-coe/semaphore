@@ -11,7 +11,7 @@
     sizeInGB: "{{ lookup('env', 'sizeInGB') }}"
 
   tasks:
-    - name: Create lun with direct connection
+    - name: Expand Volume on Storage
       hitachivantara.vspone_block.vsp.hv_ldev:
         connection_info:
           address: "{{ lookup('env', 'storage_address') }}"
@@ -24,4 +24,4 @@
       register: result_expand_lun
 
     - debug:
-        var: result_create_lun
+        var: result_expand_lun
