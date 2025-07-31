@@ -13,7 +13,7 @@
 
   tasks:
     - name: Gather all ESXi hosts in the cluster
-      community.vmware.vmware_host_config_info::
+      vmware_cluster_info::
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
@@ -22,7 +22,7 @@
       register: cluster_hosts
 
     - name: Get HBA WWNs for each host
-      community.vmware.vmware_host_facts:
+      vmware_host_facts:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
