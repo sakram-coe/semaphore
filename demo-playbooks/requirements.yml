@@ -2,4 +2,3 @@
 collections:
   - hitachivantara.vspone_block
   - community.vmware
-  - ansible.builtin
