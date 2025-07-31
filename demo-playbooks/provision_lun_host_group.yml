@@ -1,0 +1,58 @@
+- name: Provision lun to host direct
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - hitachivantara.vspone_block.vsp
+
+ # vars_files:
+ #   - ../ansible_vault_vars/ansible_vault_storage_var.yml
+
+  tasks:
+    - name: Create lun with direct connection
+      hitachivantara.vspone_block.vsp.hv_ldev:
+        connection_info:
+          address: "{{ lookup('env', 'storage_address') }}"
+          username: "{{ lookup('env', 'storage_username') }}"
+          password: "{{ lookup('env', 'storage_secret') }}"
+        state: present
+        spec:
+          pool_id: '{{ pool_id }}'
+          size: '{{ sizeInGB }}'
+          name: '{{ dsname }}'
+      register: result_create_lun
+
+    - debug:
+        var: result_create_lun
+
+    - name: Present luns to hostgroup with direct connection
+      hitachivantara.vspone_block.vsp.hv_hg:
+        connection_info:
+          address: "{{ lookup('env', 'storage_address') }}"
+          username: "{{ lookup('env', 'storage_username') }}"
+          password: "{{ lookup('env', 'storage_secret') }}"
+
+        state: present
+        spec:
+          state: present_ldev
+          name: "{{ cluster_name }}"
+          port: "{{ item }}"
+          ldevs: ["{{ result_create_lun['data']['ldev_id']  | int }}"]
+      loop: "{{ port_id }}"
+
+      register: result_present_lun
+
+    - debug:
+        var: result_present_lun
+
+    - name: save the Json data to a Variable as a Fact
+      set_fact:
+        jsondata: "{{ result_create_lun }}"
+
+    - name: get Ldev Id of the Created Volume and Save it to variable ldevid
+      set_fact:
+        ldevid: "{{jsondata | json_query('*.logical_unit_id_hex_format')}}"
+    - name: get NAA Id of the Created Volume and Save it to variable naaid
+      set_fact:
+        naaid: "{{jsondata | json_query('*.canonical_name')}}"
+    - debug: var=ldevid
+    - debug: var=naaid
