@@ -1,0 +1,41 @@
+---
+- name: Get HBA WWNs from VMware Cluster Hosts
+  hosts: localhost
+  gather_facts: no
+  collections:
+    - community.vmware
+
+  vars:
+    vcenter_hostname: "{{ lookup('env', 'vcenter_ip') }}"
+    vcenter_username: "{{ lookup('env', 'vcenter_user') }}"
+    vcenter_password: "{{ lookup('env', 'vcenter_password') }}"
+    cluster_name: "{{ lookup('env', 'vcenter_cluster') }}"
+
+  tasks:
+    - name: Gather all ESXi hosts in the cluster
+      vmware_cluster_hosts_info:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        cluster_name: "{{ cluster_name }}"
+      register: cluster_hosts
+
+    - name: Get HBA WWNs for each host
+      vmware_host_facts:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        esxi_hostname: "{{ item }}"
+      loop: "{{ cluster_hosts.hosts }}"
+      register: host_facts
+
+    - name: Print HBA WWNs
+      debug:
+        msg: |
+          Host: {{ item.invocation.module_args.esxi_hostname }}
+          WWNs: {{
+            item.ansible_facts.esxi_hba_info | map(attribute='port_wwn') | list
+          }}
+      loop: "{{ host_facts.results }}"
