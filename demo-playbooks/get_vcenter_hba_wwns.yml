@@ -13,7 +13,7 @@
 
   tasks:
     - name: Gather all ESXi hosts in the cluster
-      vmware_cluster_info::
+      vmware_cluster:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
