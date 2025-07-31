@@ -9,8 +9,8 @@
     # Common connection info for all tasks
     connection_info:
       address: "{{ lookup('env', 'storage_address') }}"
-      username: "{{ lookup('env', 'storage_username' }}"
-      password: "{{ lookup('env', 'storage_secret' }}"
+      username: "{{ lookup('env', 'storage_username') }}"
+      password: "{{ lookup('env', 'storage_secret') }}"
 
   tasks:
     ####################################################################
