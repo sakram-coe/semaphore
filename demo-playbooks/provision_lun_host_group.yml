@@ -44,7 +44,7 @@
           state: present_ldev
           name: "{{ cluster_name }}"
           port: "{{ item }}"
-          ldevs: ["{{ result_create_lun['data']['ldev_id']  | int }}"]
+          ldevs: ["{{ result_create_lun['ldev_id']  | int }}"]
       loop: "{{ port_list }}"
 
       register: result_present_lun
