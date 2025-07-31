@@ -18,6 +18,7 @@
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
         validate_certs: no
+        datacenter_name: "{{ lookup('env', 'vcenter_datacenter') }}"
         cluster_name: "{{ cluster_name }}"
       register: cluster_hosts
 
