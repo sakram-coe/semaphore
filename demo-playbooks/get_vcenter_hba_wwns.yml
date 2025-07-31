@@ -22,7 +22,6 @@
         validate_certs: no
         datacenter: "{{ datacenter }}"
         cluster_name: "{{ cluster_name }}"
-      delegate_to: localhost
       register: cluster_info
     
     - debug:
