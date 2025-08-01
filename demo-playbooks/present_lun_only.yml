@@ -36,7 +36,7 @@
 
     - name: save the Json data to a Variable as a Fact
       set_fact:
-        jsondata: "{{ result_create_lun }}"
+        jsondata: "{{ result_present_lun }}"
 
     - name: get Ldev Id of the Created Volume and Save it to variable ldevid
       set_fact:
