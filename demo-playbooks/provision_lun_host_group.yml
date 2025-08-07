@@ -12,8 +12,10 @@
     sizeInGB: "{{ lookup('env', 'sizeInGB') }}"
     dsname: "{{ lookup('env', 'dsname') }}"
     cluster_name: "{{ lookup('env', 'cluster_name') }}"
+    cluster_name_list: "{{ cluster_name.split(',') }}"
     port_id: "{{ lookup('env', 'port_id') }}"
     port_list: "{{ port_id.split(',') }}"
+    combined_cluster_port: "{{ cluster_name_list | product(port_list) | list }}"
 
   tasks:
     - name: Create lun with direct connection
@@ -42,10 +44,12 @@
         state: present
         spec:
           state: present_ldev
-          name: "{{ cluster_name }}"
-          port: "{{ item }}"
+          name: "{{ item.0 }}"
+          port: "{{ item.1 }}"
           ldevs: ["{{ result_create_lun['volume']['ldev_id']  | int }}"]
-      loop: "{{ port_list }}"
+      loop: "{{ combined_cluster_port }}"
+      debug:
+        msg: "Presenting LUN to hostgroup {{ item.0 }} on port {{ item.1 }}"
 
       register: result_present_lun
 
