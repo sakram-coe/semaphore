@@ -40,7 +40,6 @@
           address: "{{ lookup('env', 'storage_address') }}"
           username: "{{ lookup('env', 'storage_username') }}"
           password: "{{ lookup('env', 'storage_secret') }}"
-
         state: present
         spec:
           state: present_ldev
@@ -48,8 +47,7 @@
           port: "{{ item.1 }}"
           ldevs: ["{{ result_create_lun['volume']['ldev_id']  | int }}"]
       loop: "{{ combined_cluster_port }}"
-      debug:
-        msg: "Presenting LUN to hostgroup {{ item.0 }} on port {{ item.1 }}"
+
 
       register: result_present_lun
 
