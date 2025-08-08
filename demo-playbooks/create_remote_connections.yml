@@ -7,6 +7,8 @@
   vars:
     local_storage_serial_number: "{{ lookup('env', 'local_storage_serial_number') }}"
     remote_storage_serial_number: "{{ lookup('env', 'remote_storage_serial_number') }}"
+    local_storage_address: "{{ lookup('env', 'local_storage_address') }}"
+    remote_storage_address: "{{ lookup('env', 'remote_storage_address') }}"
     
     local_port_ctla_01: "{{ lookup('env', 'local_port_ctla_01') }}"
     remote_port_ctla_01: "{{ lookup('env', 'remote_port_ctla_01') }}"
@@ -16,12 +18,12 @@
     path_group_id: "{{ lookup('env', 'path_group_id') }}"
     
     connection_info:
-      address: "{{ lookup('env', 'local_storage_address') }}"
+      address: "{{ local_storage_address }}"
       username: "{{ lookup('env', 'storage_username') }}"
       password: "{{ lookup('env', 'storage_secret') }}"
       
     secondary_connection_info:
-      address: "{{ lookup('env', 'remote_storage_address') }}"
+      address: "{{ remote_storage_address }}"
       username: "{{ lookup('env', 'storage_username') }}"
       password: "{{ lookup('env', 'storage_secret') }}"
     
