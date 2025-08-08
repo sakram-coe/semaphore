@@ -1,0 +1,36 @@
+- name: Create Remote Connections on One Storage
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - hitachivantara.vspone_block.vsp
+
+  vars:
+    local_port_ctla_01: "{{ lookup('env', 'local_port_ctla_01') }}"
+    remote_port_ctla_01: "{{ lookup('env', 'remote_port_ctla_01') }}"
+    local_port_ctlb_01: "{{ lookup('env', 'local_port_ctlb_01') }}"
+    remote_port_ctlb_01: "{{ lookup('env', 'remote_port_ctlb_01') }}"
+    remote_storage_serial_number: "{{ lookup('env', 'remote_storage_serial_number') }}"
+    path_group_id: "{{ lookup('env', 'path_group_id') }}"
+  tasks:
+    - name: Create Remote Connection on a single Storage array. Do this on both sides
+      hitachivantara.vspone_block.vsp.hv_ldev:
+        connection_info:
+          address: "{{ lookup('env', 'storage_address') }}"
+          username: "{{ lookup('env', 'storage_username') }}"
+          password: "{{ lookup('env', 'storage_secret') }}"
+        state: present
+        spec:
+          path_group_id: '{{ path_group_id }}'
+          remote_storage_serial_number: '{{ remote_storage_serial_number }}'
+          remote_paths:
+            - local_port: '{{ local_port_ctla_01 }}'
+              remote_port: '{{ remote_port_ctla_01 }}'
+            - local_port: '{{ local_port_ctlb_01 }}'
+              remote_port: '{{ remote_port_ctlb_01 }}'
+          min_remote_paths: 1
+          remote_io_timeout_in_sec: 15
+          round_trip_in_msec: 1
+      register: result_create_remote_connection
+
+    - debug:
+        var: result_create_remote_connection
