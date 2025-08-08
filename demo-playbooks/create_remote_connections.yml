@@ -16,12 +16,12 @@
     path_group_id: "{{ lookup('env', 'path_group_id') }}"
     
     connection_info:
-      address: "{{ lookup('env', 'local_storage_address') }}"
+      address: "{{ lookup('env', 'storage_address') }}"
       username: "{{ lookup('env', 'storage_username') }}"
       password: "{{ lookup('env', 'storage_secret') }}"
       
     secondary_connection_info:
-      address: "{{ lookup('env', 'remote_storage_address') }}"
+      address: "{{ lookup('env', 'storage_address') }}"
       username: "{{ lookup('env', 'storage_username') }}"
       password: "{{ lookup('env', 'storage_secret') }}"
     
@@ -33,7 +33,7 @@
         state: present
         spec:
           is_mutual_discovery: true
-          rest_server_ip: "{{ remote_storage_address }}"
+          rest_server_ip: "{{ storage_address }}"
 
     - name: Create Remote Connection on a single Storage array. Do this on both sides
       hitachivantara.vspone_block.vsp.hv_remote_connection:
