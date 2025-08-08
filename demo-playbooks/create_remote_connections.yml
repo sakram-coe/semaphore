@@ -19,7 +19,7 @@
           username: "{{ lookup('env', 'storage_username') }}"
           password: "{{ lookup('env', 'storage_secret') }}"
         secondary_connection_info:
-          address: "{{ lookup('env', 'remote_storage_address') }}"
+          remote_storage_address: "{{ lookup('env', 'remote_storage_address') }}"
           username: "{{ lookup('env', 'storage_username') }}"
           password: "{{ lookup('env', 'storage_secret') }}"
         state: present
