@@ -9,7 +9,7 @@
     remote_storage_serial_number: "{{ lookup('env', 'remote_storage_serial_number') }}"
     local_storage_address: "{{ lookup('env', 'local_storage_address') }}"
     remote_storage_address: "{{ lookup('env', 'remote_storage_address') }}"
-    
+
     local_port_ctla_01: "{{ lookup('env', 'local_port_ctla_01') }}"
     remote_port_ctla_01: "{{ lookup('env', 'remote_port_ctla_01') }}"
     local_port_ctlb_01: "{{ lookup('env', 'local_port_ctlb_01') }}"
@@ -35,7 +35,6 @@
         state: present
         spec:
           is_mutual_discovery: true
-          rest_server_ip: "{{ local_storage_address }}"
 
     - name: Create Remote Connection on a single Storage array. Do this on both sides
       hitachivantara.vspone_block.vsp.hv_remote_connection:
